@@ -7,3 +7,15 @@
 	- User
 	- Room
 	- Search
+
+### 2022-01-09 진행상황
+- 1차 피드백 전, ERD 설계 완료
+	- RoomImg
+	- Reservation
+	- Review
+	- RoomType
+	- Category
+	- WishList
+		- WishMapping
+	- Amenities
+		- AmenitiesMapping
