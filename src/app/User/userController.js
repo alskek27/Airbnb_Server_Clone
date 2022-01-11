@@ -8,45 +8,40 @@ const regexEmail = require("regex-email");
 const {emit} = require("nodemon");
 
 /**
- * API No. 0
- * API Name : 테스트 API
- * [GET] /app/test
- */
-// exports.getTest = async function (req, res) {
-//     return res.send(response(baseResponse.SUCCESS))
-// }
-
-/**
  * API No. 1
- * API Name : 유저 생성 (회원가입) API
- * [POST] /app/users
+ * API Name : 회원가입 API
+ * [POST] /users/sign-up
  */
 exports.postUsers = async function (req, res) {
+    const {firstName, lastName, birth, email, password} = req.body;
 
-    /**
-     * Body: email, password, nickname
-     */
-    const {email, password, nickname} = req.body;
+    if (!firstName)
+        return res.send(response(baseResponse.SIGNUP_FIRSTNAME_EMPTY)); // 2001 : 이름을 입력해 주세요.
 
-    // 빈 값 체크
+    if (!lastName)
+        return res.send(response(baseResponse.SIGNUP_LASTNAME_EMPTY)); // 2002 : 성을 입력해 주세요.
+
+    if (!birth)
+        return res.send(response(baseResponse.SIGNUP_BIRTH_EMPTY)); // 2003 : 생년월일을 입력해 주세요.
+
     if (!email)
-        return res.send(response(baseResponse.SIGNUP_EMAIL_EMPTY));
+        return res.send(response(baseResponse.SIGNUP_EMAIL_EMPTY)); // 2004 : 이메일을 입력해 주세요.
 
-    // 길이 체크
     if (email.length > 30)
-        return res.send(response(baseResponse.SIGNUP_EMAIL_LENGTH));
+        return res.send(response(baseResponse.SIGNUP_EMAIL_LENGTH)); // 2005 : 이메일은 30자리 미만으로 입력해 주세요.
 
-    // 형식 체크 (by 정규표현식)
     if (!regexEmail.test(email))
-        return res.send(response(baseResponse.SIGNUP_EMAIL_ERROR_TYPE));
+        return res.send(response(baseResponse.SIGNUP_EMAIL_ERROR_TYPE)); // 2006 : 이메일을 형식을 정확하게 입력해 주세요.
 
-    // 기타 등등 - 추가하기
+    if (!password)
+        return res.send(response(baseResponse.SIGNUP_PASSWORD_EMPTY)); // 2007 : 비밀번호를 입력해 주세요.
+
+    if (password.length < 6 || password.length > 20)
+        return res.send(response(baseResponse.USER_PASSWORD_LENGTH)); // 2008 : 비밀번호는 6~20자리를 입력해 주세요.
 
 
     const signUpResponse = await userService.createUser(
-        email,
-        password,
-        nickname
+        firstName, lastName, birth, email, password
     );
 
     return res.send(signUpResponse);
@@ -54,44 +49,72 @@ exports.postUsers = async function (req, res) {
 
 /**
  * API No. 2
+ * API Name : 로그인 API
+ * [POST] /users/login
+ */
+exports.loginUsers = async function (req, res) {
+    const {email, password} = req.body;
+
+    if (!email)
+        return res.send(response(baseResponse.SIGNIN_EMAIL_EMPTY)); // 2009 : 이메일을 입력해 주세요.
+
+    if (email.length > 30)
+        return res.send(response(baseResponse.SIGNIN_EMAIL_LENGTH)); // 2010 : 이메일은 30자리 미만으로 입력해 주세요.
+
+    if (!regexEmail.test(email))
+        return res.send(response(baseResponse.SIGNIN_EMAIL_ERROR_TYPE)); // 2011 : 이메일을 형식을 정확하게 입력해 주세요.
+
+    if (!password)
+        return res.send(response(baseResponse.SIGNIN_PASSWORD_EMPTY)); // 2012 : 비밀번호를 입력해 주세요.
+
+    if (password.length < 6 || password.length > 20)
+        return res.send(response(baseResponse.SIGNIN_PASSWORD_LENGTH)); // 2013 : 비밀번호는 6~20자리를 입력해 주세요.
+
+    const signInResponse = await userService.postSignIn(email, password);
+
+    return res.send(signInResponse);
+};
+
+/**
+ * API No. 2
  * API Name : 유저 조회 API (+ 이메일로 검색 조회)
  * [GET] /app/users
  */
-exports.getUsers = async function (req, res) {
-
-    /**
-     * Query String: email
-     */
-    const email = req.query.email;
-
-    if (!email) {
-        // 유저 전체 조회
-        const userListResult = await userProvider.retrieveUserList();
-        return res.send(response(baseResponse.SUCCESS, userListResult));
-    } else {
-        // 유저 검색 조회
-        const userListByEmail = await userProvider.retrieveUserList(email);
-        return res.send(response(baseResponse.SUCCESS, userListByEmail));
-    }
-};
+// exports.getUsers = async function (req, res) {
+//
+//     /**
+//      * Query String: email
+//      */
+//     const email = req.query.email;
+//
+//     if (!email) {
+//         // 유저 전체 조회
+//         const userListResult = await userProvider.retrieveUserList();
+//         return res.send(response(baseResponse.SUCCESS, userListResult));
+//     } else {
+//         // 유저 검색 조회
+//         const userListByEmail = await userProvider.retrieveUserList(email);
+//         return res.send(response(baseResponse.SUCCESS, userListByEmail));
+//     }
+// };
 
 /**
  * API No. 3
  * API Name : 특정 유저 조회 API
  * [GET] /app/users/{userId}
  */
-exports.getUserById = async function (req, res) {
-
-    /**
-     * Path Variable: userId
-     */
-    const userId = req.params.userId;
-
-    if (!userId) return res.send(errResponse(baseResponse.USER_USERID_EMPTY));
-
-    const userByUserId = await userProvider.retrieveUser(userId);
-    return res.send(response(baseResponse.SUCCESS, userByUserId));
-};
+// exports.getUserById = async function (req, res) {
+//
+//     /**
+//      * Path Variable: userId
+//      */
+//     const userId = req.params.userId;
+//
+//     if (!userId) return res.send(errResponse(baseResponse.USER_USERID_EMPTY));
+//
+//     const userByUserId = await userProvider.retrieveUser(userId);
+//     return res.send(response(baseResponse.SUCCESS, userByUserId));
+// };
 
 
 // TODO: After 로그인 인증 방법 (JWT)
@@ -101,16 +124,16 @@ exports.getUserById = async function (req, res) {
  * [POST] /app/login
  * body : email, passsword
  */
-exports.login = async function (req, res) {
-
-    const {email, password} = req.body;
-
-    // TODO: email, password 형식적 Validation
-
-    const signInResponse = await userService.postSignIn(email, password);
-
-    return res.send(signInResponse);
-};
+// exports.login = async function (req, res) {
+//
+//     const {email, password} = req.body;
+//
+//     // TODO: email, password 형식적 Validation
+//
+//     const signInResponse = await userService.postSignIn(email, password);
+//
+//     return res.send(signInResponse);
+// };
 
 
 /**
@@ -120,24 +143,24 @@ exports.login = async function (req, res) {
  * path variable : userId
  * body : nickname
  */
-exports.patchUsers = async function (req, res) {
-
-    // jwt - userId, path variable :userId
-
-    const userIdFromJWT = req.verifiedToken.userId
-
-    const userId = req.params.userId;
-    const nickname = req.body.nickname;
-
-    if (userIdFromJWT != userId) {
-        res.send(errResponse(baseResponse.USER_ID_NOT_MATCH));
-    } else {
-        if (!nickname) return res.send(errResponse(baseResponse.USER_NICKNAME_EMPTY));
-
-        const editUserInfo = await userService.editUser(userId, nickname)
-        return res.send(editUserInfo);
-    }
-};
+// exports.patchUsers = async function (req, res) {
+//
+//     // jwt - userId, path variable :userId
+//
+//     const userIdFromJWT = req.verifiedToken.userId
+//
+//     const userId = req.params.userId;
+//     const nickname = req.body.nickname;
+//
+//     if (userIdFromJWT != userId) {
+//         res.send(errResponse(baseResponse.USER_ID_NOT_MATCH));
+//     } else {
+//         if (!nickname) return res.send(errResponse(baseResponse.USER_NICKNAME_EMPTY));
+//
+//         const editUserInfo = await userService.editUser(userId, nickname)
+//         return res.send(editUserInfo);
+//     }
+// };
 
 
 
@@ -152,8 +175,8 @@ exports.patchUsers = async function (req, res) {
 /** JWT 토큰 검증 API
  * [GET] /app/auto-login
  */
-exports.check = async function (req, res) {
-    const userIdResult = req.verifiedToken.userId;
-    console.log(userIdResult);
-    return res.send(response(baseResponse.TOKEN_VERIFICATION_SUCCESS));
-};
+// exports.check = async function (req, res) {
+//     const userIdResult = req.verifiedToken.userId;
+//     console.log(userIdResult);
+//     return res.send(response(baseResponse.TOKEN_VERIFICATION_SUCCESS));
+// };

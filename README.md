@@ -28,9 +28,17 @@
         - Room -> 숙박 장소 정보 추가
     - dev, prod 도메인에 SSL 적용할 것 (완료)
     - 생산성 높일 것
-
-
 - API 명세서 리스트업 (22개)
 - RDS 데이터베이스 구축
 - dev 폴더에 노드 템플릿 적용
 - Reverse Proxy 적용
+
+### 2022-01-11 진행상황
+- ERD 수정
+  - User -> mode 컬럼 추가
+  - Room -> latitude, longitude 컬럼 추가
+  - RoomType -> building, type, detail 컬럼 추가
+  - StayPlace 테이블 추가
+- API 구현 및 명세서 작성
+  - 회원가입 API
+  - 로그인 PI
