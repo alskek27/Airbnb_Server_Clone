@@ -41,4 +41,18 @@
   - StayPlace 테이블 추가
 - API 구현 및 명세서 작성
   - 회원가입 API
-  - 로그인 PI
+  - 로그인 API
+
+### 2022-01-12 진행상황
+- API 구현 및 명세서 작성
+  - 자동 로그인 API
+  - 검색 기록 등록 API
+- API dev 서버 반영
+  - 회원가입 API
+  - 로그인 API
+  - 자동 로그인 API
+- 개발 이슈
+  - 검색 기록 등록 API에서 adults, children, infants, pets 컬럼들이 default 값인 0이 아니라, null로 들어가는 오류 발생
+  - int default 0 null -> int unsigned default '0' not null (수정)
+  - datagrip 환경에선 default 값이 정상적으로 들어가지만, postman 환경에선 제대로 들어가지 않음
+  - searchController.js 파일에서 validation으로 값이 null일 경우, 0으로 변환시켜주는 식으로 처리
