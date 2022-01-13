@@ -56,3 +56,15 @@
   - int default 0 null -> int unsigned default '0' not null (수정)
   - datagrip 환경에선 default 값이 정상적으로 들어가지만, postman 환경에선 제대로 들어가지 않음
   - searchController.js 파일에서 validation으로 값이 null일 경우, 0으로 변환시켜주는 식으로 처리
+
+### 2022-01-13 진행상황
+- API 구현 및 명세서 작성
+  - 최근 검색 기록 조회 API
+  - 숙소 조회 API
+- API dev 서버 반영
+  - 검색 기록 등록 API
+  - 최근 검색 기록 조회 API
+- 클라이언트 개발자 분과 소통
+  - 숙소 이미지 처리 -> 클라이언트에서 도전해보고 싶다!
+  - 혹시 모르니, 서버에서도 이미지를 보내주는 걸로 결정
+- DB에 필요한 데이터 값 입력

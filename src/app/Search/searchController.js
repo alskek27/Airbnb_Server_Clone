@@ -20,8 +20,10 @@ exports.postSearch = async function (req, res) {
         return res.send(errResponse(baseResponse.USER_USERID_EMPTY)); // 2014 : userId를 입력해 주세요.
 
     if (!location)
-        return res.send(errResponse(baseResponse.SEARCH_LOCATION_EMPTY)); // 2016 : 위치를 입력해 주세요.
+        return res.send(errResponse(baseResponse.LOCATION_EMPTY)); // 2016 : 위치를 입력해 주세요.
 
+    if (!checkIn) checkIn = "0000-00-00";
+    if (!checkOut) checkOut = "0000-00-00";
     if (!adults) adults = 0;
     if (!children) children = 0;
     if (!infants) infants = 0;

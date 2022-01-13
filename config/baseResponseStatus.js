@@ -26,9 +26,8 @@ module.exports = {
 
     USER_USERID_EMPTY : { "isSuccess": false, "code": 2014, "message": "userId를 입력해 주세요." },
     USER_ID_NOT_MATCH : { "isSuccess": false, "code": 2015, "message": "유저 아이디 값을 확인해 주세요." },
-
-    SEARCH_LOCATION_EMPTY : { "isSuccess": false, "code": 2016, "message": "위치를 입력해 주세요." },
-
+    LOCATION_EMPTY : { "isSuccess": false, "code": 2016, "message": "위치를 입력해 주세요." },
+    ROOM_ID_EMPTY : { "isSuccess": false, "code": 2017, "message": "roomId를 입력해 주세요." },
 
 
 

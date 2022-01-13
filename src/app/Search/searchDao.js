@@ -49,9 +49,32 @@ async function updateSearchInfo(connection, searchId) {
     return checkSearchInfoRow[0];
 }
 
+// 검색 기록 조회
+async function selectSearch(connection, userIdFromJWT) {
+    const selectSearchQuery = `
+        SELECT searchId, location,
+               DATE_FORMAT(checkIn, '%Y-%m-%d') AS checkIn,
+               DATE_FORMAT(checkOut, '%Y-%m-%d') AS checkOut,
+               adults,
+               children,
+               infants,
+               pets
+        FROM Search
+        WHERE userId = ?
+        ORDER BY updatedAt desc;
+    `;
+    const [selectSearchRow] = await connection.query(
+        selectSearchQuery,
+        userIdFromJWT
+    );
+
+    return selectSearchRow;
+}
+
 
 module.exports = {
     insertSearchInfo,
     checkSearchInfo,
-    updateSearchInfo
+    updateSearchInfo,
+    selectSearch
 };
