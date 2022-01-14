@@ -28,15 +28,38 @@ exports.getRooms = async function (req, res) {
 exports.getRoomContents = async function (req, res) {
     const roomId = req.params.roomId;
 
-    if (!roomId)
-        return res.send(errResponse(baseResponse.ROOM_ID_EMPTY)); // 2017 : roomId를 입력해 주세요.
+    if (!roomId) return res.send(errResponse(baseResponse.ROOM_ID_EMPTY)); // 2017 : roomId를 입력해 주세요.
 
-    const selectRoomImage = await roomProvider.selectRoomImages(roomId);
+    const selectRoomImages = await roomProvider.selectRoomImages(roomId);
     const selectRoomContents = await roomProvider.selectRoomContents(roomId);
-    const selectRoomAmenities = await roomProvider.selectRoomAmenities(roomId);
-    const selectRoomReviews = await roomProvider.selectRoomReviews(roomId);
-    const selectRoomlocation = await roomProvider.selectRoomlocation(roomId);
     const selectRoomHostInfo = await roomProvider.selectRoomHostInfo(roomId);
 
+    const result = {
+        "roomImages" : selectRoomImages,
+        "roomInfo" : selectRoomContents,
+        "roomHostInfo" : selectRoomHostInfo
+    };
+
+    return res.send(response(baseResponse.SUCCESS, result));
 };
 
+/**
+ * API No. 8
+ * API Name : 숙소 후기 조회 API
+ * [GET] /rooms/:roomId/reviews
+ */
+exports.getRoomReviews = async function (req, res) {
+    const roomId = req.params.roomId;
+
+    if (!roomId) return res.send(errResponse(baseResponse.ROOM_ID_EMPTY)); // 2017 : roomId를 입력해 주세요.
+
+    const selectReviewGrade = await roomProvider.selectReviewGrade(roomId);
+    const selectReviews = await roomProvider.selectRoomReviews(roomId);
+
+    const result = {
+        "reviewGrades" : selectReviewGrade,
+        "reviews" : selectReviews
+    };
+
+    return res.send(response(baseResponse.SUCCESS, result));
+};

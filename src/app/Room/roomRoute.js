@@ -7,4 +7,7 @@ module.exports = function (app) {
 
     // 7. 숙소 상세 조회 API
     app.get('/rooms/:roomId/contents', room.getRoomContents);
+
+    // 8. 숙소 후기 조회 API
+    app.get('/rooms/:roomId/reviews', room.getRoomReviews);
 };

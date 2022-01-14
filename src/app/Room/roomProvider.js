@@ -29,13 +29,21 @@ exports.selectRoomContents = async function (roomId) {
     return roomContentsResult;
 };
 
-exports.selectRoomAmenities = async function (roomId) {
+exports.selectRoomHostInfo = async function (roomId) {
     const connection = await pool.getConnection(async (conn) => conn);
-    const roomAmenitiesResult = await roomDao.selectRoomAmenities(connection, roomId);
+    const roomHostInfoResult = await roomDao.selectRoomHostInfo(connection, roomId);
     connection.release();
 
-    return roomAmenitiesResult;
-}
+    return roomHostInfoResult;
+};
+
+exports.selectReviewGrade = async function (roomId) {
+    const connection = await pool.getConnection(async (conn) => conn);
+    const reviewGradeResult = await roomDao.selectReviewGrade(connection, roomId);
+    connection.release();
+
+    return reviewGradeResult;
+};
 
 exports.selectRoomReviews = async function (roomId) {
     const connection = await pool.getConnection(async (conn) => conn);
@@ -43,20 +51,4 @@ exports.selectRoomReviews = async function (roomId) {
     connection.release();
 
     return roomReviewsResult;
-};
-
-exports.selectRoomlocation = async function (roomId) {
-    const connection = await pool.getConnection(async (conn) => conn);
-    const roomLocationResult = await roomDao.selectRoomLocation(connection, roomId);
-    connection.release();
-
-    return roomLocationResult;
-};
-
-exports.selectRoomHostInfo = async function (roomId) {
-    const connection = await pool.getConnection(async (conn) => conn);
-    const roomHostInfoResult = await roomDao.selectRoomHostInfo(connection, roomId);
-    connection.release();
-
-    return roomHostInfoResult;
 };
