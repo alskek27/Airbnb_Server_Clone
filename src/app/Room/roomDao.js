@@ -135,6 +135,65 @@ async function selectRoomReviews(connection, roomId) {
     return selectRoomReviewsRow[0];
 }
 
+// 숙소 체크
+async function checkRoom(connection, roomId) {
+    const checkRoomQuery = `
+            SELECT * FROM Room WHERE roomId = ?;
+    `;
+    const checkRoomRow = await connection.query(
+        checkRoomQuery,
+        roomId
+    );
+
+    return checkRoomRow[0];
+}
+
+// 숙소 찜 상태 체크
+async function checkRoomLike(connection, userIdFromJWT, wishId, roomId) {
+    const checkRoomLikeQuery = `
+        SELECT listName AS wishListName,
+               roomId,
+               WM.status
+        FROM WishMapping WM
+                 INNER JOIN WishList WL on WM.wishId = WL.wishId
+        WHERE userId = ? AND WL.wishId = ? AND roomId = ?;
+    `;
+    const checkRoomLikeRow = await connection.query(
+        checkRoomLikeQuery,
+        [userIdFromJWT, wishId, roomId]
+    );
+
+    return checkRoomLikeRow[0];
+}
+
+// 숙소 찜 등록
+async function insertRoomLike(connection, wishId, roomId) {
+    const insertRoomLikeQuery = `
+        INSERT INTO WishMapping(wishId, roomId)
+        VALUES (?, ?);
+    `;
+    const insertRoomLikeRow = await connection.query(
+        insertRoomLikeQuery,
+        [wishId, roomId]
+    );
+
+    return insertRoomLikeRow;
+}
+
+// 숙소 찜 변경사항 반영
+async function updateRoomLike(connection, status, roomId) {
+    const updateRoomLikeQuery = `
+        UPDATE WishMapping SET status = ?
+        WHERE roomId = ?;
+    `;
+    const updateRoomLikeRow = await connection.query(
+        updateRoomLikeQuery,
+        [status, roomId]
+    );
+
+    return updateRoomLikeRow;
+}
+
 
 module.exports = {
     selectRoomList,
@@ -142,5 +201,9 @@ module.exports = {
     selectRoomContents,
     selectRoomHostInfo,
     selectReviewGrade,
-    selectRoomReviews
+    selectRoomReviews,
+    checkRoom,
+    checkRoomLike,
+    insertRoomLike,
+    updateRoomLike
 };

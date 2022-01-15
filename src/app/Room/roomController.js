@@ -63,3 +63,24 @@ exports.getRoomReviews = async function (req, res) {
 
     return res.send(response(baseResponse.SUCCESS, result));
 };
+
+/**
+ * API No. 9
+ * API Name : 숙소 찜 상태 변경 API
+ * [POST] /rooms/:roomId/like
+ */
+exports.postRoomLike = async function (req, res) {
+    const userIdFromJWT = req.verifiedToken.userId;
+    const roomId = req.params.roomId;
+    const {wishId} = req.body;
+
+    if (!userIdFromJWT) return res.send(response(baseResponse.TOKEN_EMPTY)); // 2000 : JWT 토큰을 입력해주세요.
+
+    if (!roomId) return res.send(response(baseResponse.ROOM_ID_EMPTY)); // 2017 : roomId를 입력해 주세요.
+
+    if (!wishId) return res.send(response(baseResponse.WISHLIST_ID_EMPTY)); // 2019 : wishListId를 입력해 주세요.
+
+    const insertRoomLikeResponse = await roomService.insertRoomLike(userIdFromJWT, wishId, roomId);
+
+    return res.send(insertRoomLikeResponse);
+};

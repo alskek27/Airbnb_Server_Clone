@@ -28,16 +28,10 @@ module.exports = {
     USER_ID_NOT_MATCH : { "isSuccess": false, "code": 2015, "message": "유저 아이디 값을 확인해 주세요." },
     LOCATION_EMPTY : { "isSuccess": false, "code": 2016, "message": "위치를 입력해 주세요." },
     ROOM_ID_EMPTY : { "isSuccess": false, "code": 2017, "message": "roomId를 입력해 주세요." },
+    WISHLIST_NAME_EMPTY : { "isSuccess": false, "code": 2018, "message": "listName을 입력해 주세요." },
+    WISHLIST_ID_EMPTY : { "isSuccess": false, "code": 2019, "message": "wishId를 입력해 주세요." },
 
 
-
-    USER_USERID_NOT_EXIST : { "isSuccess": false, "code": 2014, "message": "해당 회원이 존재하지 않습니다." },
-
-    USER_USEREMAIL_EMPTY : { "isSuccess": false, "code": 2015, "message": "이메일을 입력해주세요." },
-    USER_USEREMAIL_NOT_EXIST : { "isSuccess": false, "code": 2016, "message": "해당 이메일을 가진 회원이 존재하지 않습니다." },
-    USER_NICKNAME_EMPTY : { "isSuccess": false, "code": 2018, "message": "변경할 닉네임 값을 입력해주세요" },
-
-    USER_STATUS_EMPTY : { "isSuccess": false, "code": 2019, "message": "회원 상태값을 입력해주세요" },
 
     // Response error
     USER_REDUNDANT_EMAIL : { "isSuccess": false, "code": 3001, "message":"중복된 이메일입니다." },
@@ -45,6 +39,10 @@ module.exports = {
     USER_PASSWORD_WRONG : { "isSuccess": false, "code": 3003, "message": "비밀번호가 잘못되었습니다." },
     USER_INACTIVE_ACCOUNT : { "isSuccess": false, "code": 3004, "message": "비활성화된 계정입니다. 고객센터에 문의해 주세요." },
     USER_WITHDRAWAL_ACCOUNT : { "isSuccess": false, "code": 3005, "message": "탈퇴된 계정입니다. 고객센터에 문의해 주세요." },
+
+    ROOM_NOT_EXIST : { "isSuccess": false, "code": 3006, "message": "해당 숙소가 존재하지 않습니다." },
+    WISHLISTS_NOT_EXITS : { "isSuccess": false, "code": 3007, "message": "해당 위시리스트가 존재하지 않습니다." },
+    NOT_WISHLIST_USER : { "isSuccess": false, "code": 3008, "message": "해당 계정의 위시리스트가 아닙니다." },
 
     //Connection, Transaction 등의 서버 오류
     DB_ERROR : { "isSuccess": false, "code": 4000, "message": "데이터 베이스 에러"},

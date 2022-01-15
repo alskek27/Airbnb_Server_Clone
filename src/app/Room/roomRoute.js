@@ -10,4 +10,7 @@ module.exports = function (app) {
 
     // 8. 숙소 후기 조회 API
     app.get('/rooms/:roomId/reviews', room.getRoomReviews);
+
+    // 10. 숙소 찜 상태 변경 API
+    app.post('/rooms/:roomId/like', jwtMiddleware, room.postRoomLike);
 };

@@ -13,6 +13,9 @@ exports.postSearch = async function (req, res) {
     const userIdFromJWT = req.verifiedToken.userId;
     let {userId, location, checkIn, checkOut, adults, children, infants, pets} = req.body;
 
+    if (!userIdFromJWT)
+        return res.send(errResponse(baseResponse.TOKEN_EMPTY)); // 2000 : JWT 토큰을 입력해 주세요.
+
     if (userIdFromJWT != userId)
         return res.send(errResponse(baseResponse.USER_ID_NOT_MATCH)); // 2015 : 유저 아이디 값을 확인해 주세요.
 

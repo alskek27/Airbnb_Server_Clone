@@ -52,3 +52,19 @@ exports.selectRoomReviews = async function (roomId) {
 
     return roomReviewsResult;
 };
+
+exports.checkRoom = async function (roomId) {
+    const connection = await pool.getConnection(async (conn) => conn);
+    const checkRoomResult = await roomDao.checkRoom(connection, roomId);
+    connection.release();
+
+    return checkRoomResult;
+};
+
+exports.checkRoomLike = async function (userIdFromJWT, wishId, roomId) {
+    const connection = await pool.getConnection(async (conn) => conn);
+    const checkRoomLikeResult = await roomDao.checkRoomLike(connection, userIdFromJWT, wishId, roomId);
+    connection.release();
+
+    return checkRoomLikeResult;
+};

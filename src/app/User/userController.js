@@ -37,7 +37,7 @@ exports.postUsers = async function (req, res) {
         return res.send(response(baseResponse.SIGNUP_PASSWORD_EMPTY)); // 2007 : 비밀번호를 입력해 주세요.
 
     if (password.length < 6 || password.length > 20)
-        return res.send(response(baseResponse.USER_PASSWORD_LENGTH)); // 2008 : 비밀번호는 6~20자리를 입력해 주세요.
+        return res.send(response(baseResponse.SIGNUP_PASSWORD_LENGTH)); // 2008 : 비밀번호는 6~20자리를 입력해 주세요.
 
 
     const signUpResponse = await userService.createUser(
