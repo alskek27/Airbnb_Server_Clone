@@ -10,14 +10,20 @@ const {response, errResponse} = require("../../../config/response");
  * [GET] /rooms
  */
 exports.getRooms = async function (req, res) {
+    const userIdFromJWT = req.verifiedToken.userId;
     const location = req.query.location;
 
-    if (!location)
-        return res.send(errResponse(baseResponse.LOCATION_EMPTY)); // 2016 : 위치를 입력해 주세요.
+    if (!location) return res.send(errResponse(baseResponse.LOCATION_EMPTY)); // 2016 : 위치를 입력해 주세요.
 
-    const selectRoomListResponse = await roomProvider.selectRoomList(location);
+    const selectRoomList = await roomProvider.selectRoomList(location);
+    const checkRoomLikesStatus = await roomProvider.checkRoomLikesStatus(userIdFromJWT);
 
-    return res.send(response(baseResponse.SUCCESS, selectRoomListResponse));
+    const result = {
+        "roomList" : selectRoomList,
+        "roomLikesStatus" : checkRoomLikesStatus
+    }
+
+    return res.send(response(baseResponse.SUCCESS, result));
 };
 
 /**
@@ -26,17 +32,20 @@ exports.getRooms = async function (req, res) {
  * [GET] /rooms/:roomId/contents
  */
 exports.getRoomContents = async function (req, res) {
+    const userIdFromJWT = req.verifiedToken.userId;
     const roomId = req.params.roomId;
 
     if (!roomId) return res.send(errResponse(baseResponse.ROOM_ID_EMPTY)); // 2017 : roomId를 입력해 주세요.
 
     const selectRoomImages = await roomProvider.selectRoomImages(roomId);
     const selectRoomContents = await roomProvider.selectRoomContents(roomId);
+    const checkRoomLikesStatus = await roomProvider.checkRoomLikesByRoomId(userIdFromJWT, roomId);
     const selectRoomHostInfo = await roomProvider.selectRoomHostInfo(roomId);
 
     const result = {
         "roomImages" : selectRoomImages,
         "roomInfo" : selectRoomContents,
+        "roomLikesStatus" : checkRoomLikesStatus,
         "roomHostInfo" : selectRoomHostInfo
     };
 

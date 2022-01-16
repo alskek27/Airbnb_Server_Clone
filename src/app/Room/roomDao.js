@@ -33,6 +33,23 @@ async function selectRoomList(connection, location) {
     return selectRoomsRow[0];
 }
 
+// 숙소 찜 상태 조회
+async function checkRoomLikesStatus(connection, userIdFromJWT) {
+    const checkRoomLikesStatusQuery = `
+        SELECT R.roomId, WM.status AS likesStatus
+        FROM WishMapping WM
+            INNER JOIN WishList WL on WM.wishId = WL.wishId
+            INNER JOIN Room R on WM.roomId = R.roomId
+        WHERE WL.userId = ?;
+    `;
+    const [checkRoomLikesStatusRow] = await connection.query(
+        checkRoomLikesStatusQuery,
+        userIdFromJWT
+    );
+
+    return checkRoomLikesStatusRow;
+}
+
 // 숙소 이미지 조회
 async function selectRoomImages(connection, roomId) {
     const selectRoomImagesQuery = `
@@ -49,7 +66,7 @@ async function selectRoomImages(connection, roomId) {
 }
 
 // 숙소 기본 정보 조회
-async function selectRoomContents(connection, roomId) {
+async function selectRoomContents(connection,roomId) {
     const selectRoomContentsQuery = `
         SELECT R.roomId, title, description,
                location, locationExplanation,
@@ -74,6 +91,23 @@ async function selectRoomContents(connection, roomId) {
     );
 
     return selectRoomContentsRow;
+}
+
+// 숙소 찜 상태 조회 (+ roomId)
+async function checkRoomLikesByRoomId(connection, userIdFromJWT, roomId) {
+    const checkRoomLikesByRoomIdQuery = `
+        SELECT R.roomId, WM.status AS likesStatus
+        FROM WishMapping WM
+                 INNER JOIN WishList WL on WM.wishId = WL.wishId
+                 INNER JOIN Room R on WM.roomId = R.roomId
+        WHERE WL.userId = ? AND R.roomId = ?;
+    `;
+    const [checkRoomLikesByRoomIdRow] = await connection.query(
+        checkRoomLikesByRoomIdQuery,
+        [userIdFromJWT, roomId]
+    );
+
+    return checkRoomLikesByRoomIdRow;
 }
 
 // 숙소 호스트 정보 조회
@@ -197,8 +231,10 @@ async function updateRoomLike(connection, status, roomId) {
 
 module.exports = {
     selectRoomList,
+    checkRoomLikesStatus,
     selectRoomImages,
     selectRoomContents,
+    checkRoomLikesByRoomId,
     selectRoomHostInfo,
     selectReviewGrade,
     selectRoomReviews,

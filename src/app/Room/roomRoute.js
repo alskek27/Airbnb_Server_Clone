@@ -3,10 +3,10 @@ module.exports = function (app) {
     const jwtMiddleware = require('../../../config/jwtMiddleware');
 
     // 6. 숙소 조회 API
-    app.get('/rooms', room.getRooms);
+    app.get('/rooms', jwtMiddleware, room.getRooms);
 
     // 7. 숙소 상세 조회 API
-    app.get('/rooms/:roomId/contents', room.getRoomContents);
+    app.get('/rooms/:roomId/contents', jwtMiddleware, room.getRoomContents);
 
     // 8. 숙소 후기 조회 API
     app.get('/rooms/:roomId/reviews', room.getRoomReviews);
