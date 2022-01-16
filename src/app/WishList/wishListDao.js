@@ -95,6 +95,34 @@ async function updateWishList(connection, listName, userIdFromJWT, wishId) {
     return updateWishListRow;
 }
 
+// 위시리스트 삭제
+async function deleteWishList(connection, userIdFromJWT, wishId) {
+    const deleteWishListQuery = `
+        UPDATE WishList SET status = 'DELETE'
+        WHERE userId = ? AND wishId = ?;
+    `;
+    const deleteWishListRow = await connection.query(
+        deleteWishListQuery,
+        [userIdFromJWT, wishId]
+    );
+
+    return deleteWishListRow;
+}
+
+// 위시리스트 숙소 삭제
+async function deleteWishListRooms(connection, wishId) {
+    const deleteWishListRoomsQuery = `
+        UPDATE WishMapping SET status = 'DELETE'
+        WHERE wishId = ?;
+    `;
+    const deleteWishListRoomsRow = await connection.query(
+        deleteWishListRoomsQuery,
+        wishId
+    );
+
+    return deleteWishListRoomsRow;
+}
+
 
 
 module.exports = {
@@ -103,4 +131,6 @@ module.exports = {
     selectWishLists,
     selectWishList,
     updateWishList,
+    deleteWishList,
+    deleteWishListRooms,
 };

@@ -13,4 +13,7 @@ module.exports = function (app) {
 
     // 13. 위시리스트 수정 API
     app.patch('/wishlists/:wishId/set', jwtMiddleware, wishList.patchWishList);
+
+    // 14. 위시리스트 삭제 API
+    app.patch('/wishlists/:wishId/status', jwtMiddleware, wishList.deleteWishList);
 };

@@ -75,3 +75,21 @@ exports.patchWishList = async function (req, res) {
 
     return res.send(updateWishList);
 };
+
+/**
+ * API No. 13
+ * API Name : 위시리스트 삭제 API
+ * [PATCH] /wishlists/:wishId/status
+ */
+exports.deleteWishList = async function (req, res) {
+    const userIdFromJWT = req.verifiedToken.userId;
+    const wishId = req.params.wishId;
+
+    if (!userIdFromJWT) return res.send(response(baseResponse.TOKEN_EMPTY)); // 2000 : JWT 토큰을 입력해주세요.
+
+    if (!wishId) return res.send(response(baseResponse.WISHLIST_ID_EMPTY)); // 2019 : wishId를 입력해 주세요.
+
+    const deleteWishList = await wishListService.deleteWishList(userIdFromJWT, wishId);
+
+    return res.send(deleteWishList);
+};
