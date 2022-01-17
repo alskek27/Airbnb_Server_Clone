@@ -228,6 +228,20 @@ async function updateRoomLike(connection, status, roomId) {
     return updateRoomLikeRow;
 }
 
+// 숙소 예약 등록
+async function insertReservation(connection, insertReservationInfoParams) {
+    const insertReservationQuery = `
+        INSERT INTO Reservation (userId, roomId, checkIn, checkOut, adults, children, infants, pets, totalCharge)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);
+    `;
+    const insertReservationRow = await connection.query(
+        insertReservationQuery,
+        insertReservationInfoParams
+    );
+
+    return insertReservationRow;
+}
+
 
 module.exports = {
     selectRoomList,
@@ -241,5 +255,6 @@ module.exports = {
     checkRoom,
     checkRoomLike,
     insertRoomLike,
-    updateRoomLike
+    updateRoomLike,
+    insertReservation
 };

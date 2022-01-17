@@ -93,3 +93,30 @@ exports.postRoomLike = async function (req, res) {
 
     return res.send(insertRoomLikeResponse);
 };
+
+/**
+ * API No. 15
+ * API Name : 숙소 예약 API
+ * [POST] /rooms/:roomId/reservations
+ */
+exports.postRoomReservation = async function (req, res) {
+    const userIdFromJWT = req.verifiedToken.userId;
+    const roomId = req.params.roomId;
+    const {checkIn, checkOut, adults, children, infants, pets} = req.body;
+
+    if (!userIdFromJWT) return res.send(response(baseResponse.TOKEN_EMPTY)); // 2000 : JWT 토큰을 입력해주세요.
+
+    if (!roomId) return res.send(response(baseResponse.ROOM_ID_EMPTY)); // 2017 : roomId를 입력해 주세요.
+
+    if (!checkIn) return res.send(response(baseResponse.CHECK_IN_DATE_EMPTY)); // 2020 : 체크인 날짜를 입력해 주세요.
+    if (!checkOut) return res.send(response(baseResponse.CHECK_OUT_DATE_EMPTY)); // 2021 : 체크아웃 날짜를 입력해 주세요.
+
+    if (!adults) return res.send(response(baseResponse.ADULTS_EMPTY)); // 2022 : 성인 인원을 입력해 주세요.
+    if (children < 0) return res.send(response(baseResponse.CHILDREN_EMPTY)); // 2023 : 어린이 인원을 입력해 주세요.
+    if (infants < 0) return res.send(response(baseResponse.INFANTS_EMPTY)); // 2024 : 유아 인원 입력해 주세요.
+    if (pets < 0) return res.send(response(baseResponse.PETS_EMPTY)); // 2025 : 반려동물 수를 입력해 주세요.
+
+    const insertReservationResponse = await roomService.insertReservation(roomId, checkIn, checkOut, adults, children, infants, pets, userIdFromJWT);
+
+    return res.send(insertReservationResponse);
+};

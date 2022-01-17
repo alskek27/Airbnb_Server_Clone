@@ -31,6 +31,15 @@ module.exports = {
     WISHLIST_NAME_EMPTY : { "isSuccess": false, "code": 2018, "message": "listName을 입력해 주세요." },
     WISHLIST_ID_EMPTY : { "isSuccess": false, "code": 2019, "message": "wishId를 입력해 주세요." },
 
+    CHECK_IN_DATE_EMPTY : { "isSuccess": false, "code": 2020, "message": "체크인 날짜를 입력해 주세요." },
+    CHECK_OUT_DATE_EMPTY : { "isSuccess": false, "code": 2021, "message": "체크아웃 날짜를 입력해 주세요." },
+    ADULTS_EMPTY : { "isSuccess": false, "code": 2022, "message": "성인 인원을 입력해 주세요." },
+    CHILDREN_EMPTY : { "isSuccess": false, "code": 2023, "message": "어린이 인원을 입력해 주세요." },
+    INFANTS_EMPTY : { "isSuccess": false, "code": 2024, "message": "유아 인원 입력해 주세요." },
+    PETS_EMPTY : { "isSuccess": false, "code": 2025, "message": "반려동물 수를 입력해 주세요." },
+
+
+
 
 
     // Response error
@@ -43,6 +52,9 @@ module.exports = {
     ROOM_NOT_EXIST : { "isSuccess": false, "code": 3006, "message": "해당 숙소가 존재하지 않습니다." },
     WISHLISTS_NOT_EXITS : { "isSuccess": false, "code": 3007, "message": "해당 위시리스트가 존재하지 않습니다." },
     NOT_WISHLIST_USER : { "isSuccess": false, "code": 3008, "message": "해당 계정의 위시리스트가 아닙니다." },
+
+    ROOM_HOST_USER : { "isSuccess": false, "code": 3009, "message": "호스트는 자신의 숙소를 예약할 수 없습니다." },
+    MAX_PEOPLE_EXCEED : { "isSuccess": false, "code": 3010, "message": "최대 숙박 인원을 초과하였습니다." },
 
     //Connection, Transaction 등의 서버 오류
     DB_ERROR : { "isSuccess": false, "code": 4000, "message": "데이터 베이스 에러"},

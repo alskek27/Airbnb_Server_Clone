@@ -13,4 +13,7 @@ module.exports = function (app) {
 
     // 10. 숙소 찜 상태 변경 API
     app.post('/rooms/:roomId/like', jwtMiddleware, room.postRoomLike);
+
+    // 15. 숙소 예약 API
+    app.post('/rooms/:roomId/reservations', jwtMiddleware, room.postRoomReservation);
 };

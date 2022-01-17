@@ -46,3 +46,32 @@ exports.insertRoomLike = async function(userIdFromJWT, wishId, roomId) {
         connection.release();
     }
 };
+
+exports.insertReservation = async function(roomId, checkIn, checkOut, adults, children, infants, pets, userIdFromJWT) {
+    const connection = await pool.getConnection(async (conn) => conn);
+    try {
+        const checkRoom = await roomProvider.checkRoom(roomId);
+        if (checkRoom.length < 1) return errResponse(baseResponse.ROOM_NOT_EXIST); // 3006 : 해당 숙소가 존재하지 않습니다.
+        if (checkRoom[0].userId === userIdFromJWT) return errResponse(baseResponse.ROOM_HOST_USER); // 3009 : 호스트는 자신의 숙소를 예약할 수 없습니다.
+        if (checkRoom[0].maxPeople < (adults + children)) return errResponse(baseResponse.MAX_PEOPLE_EXCEED); // 3010 : 최대 숙박 인원을 초과하였습니다.
+
+        const startDate = new Date(checkIn);
+        const endDate = new Date(checkOut);
+        const dateDiff = Math.ceil((endDate.getTime() - startDate.getTime())/(1000*3600*24)); // 숙박일 계산
+        const totalCharge = (checkRoom[0].roomCharge * dateDiff); // 총 숙박비
+
+        const insertReservationInfoParams = [
+            userIdFromJWT, roomId, checkIn, checkOut, adults, children, infants, pets, totalCharge
+        ];
+
+        const insertReservationResult = await roomDao.insertReservation(connection, insertReservationInfoParams);
+
+        return response(baseResponse.SUCCESS, { "reservationId": insertReservationResult[0].insertId});
+
+    } catch (err) {
+        logger.error(`App - insertReservation Service error\n: ${err.message}`);
+        return errResponse(baseResponse.DB_ERROR);
+    } finally {
+        connection.release();
+    }
+};
