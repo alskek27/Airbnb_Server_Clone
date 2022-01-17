@@ -120,3 +120,36 @@ exports.postRoomReservation = async function (req, res) {
 
     return res.send(insertReservationResponse);
 };
+
+/**
+ * API No. 16
+ * API Name : 숙소 예약 조회 API
+ * [GET] /rooms/reservations-status
+ */
+exports.getReservationList = async function (req, res) {
+    const userIdFromJWT = req.verifiedToken.userId;
+
+    if (!userIdFromJWT) return res.send(response(baseResponse.TOKEN_EMPTY)); // 2000 : JWT 토큰을 입력해주세요.
+
+    const selectReservationListResponse = await roomProvider.selectReservationList(userIdFromJWT);
+
+    return res.send(response(baseResponse.SUCCESS, selectReservationListResponse));
+};
+
+/**
+ * API No. 17
+ * API Name : 숙소 예약 취소 API
+ * [PATCH] /rooms/:roomId/reservations/cancel
+ */
+exports.deleteRoomReservation = async function (req, res) {
+    const userIdFromJWT = req.verifiedToken.userId;
+    const roomId = req.params.roomId;
+
+    if (!userIdFromJWT) return res.send(response(baseResponse.TOKEN_EMPTY)); // 2000 : JWT 토큰을 입력해주세요.
+
+    if (!roomId) return res.send(response(baseResponse.ROOM_ID_EMPTY)); // 2017 : roomId를 입력해 주세요.
+
+    const deleteRoomReservationResponse = await roomService.deleteRoomReservation(userIdFromJWT, roomId);
+
+    return res.send(deleteRoomReservationResponse);
+};

@@ -172,7 +172,7 @@ async function selectRoomReviews(connection, roomId) {
 // 숙소 체크
 async function checkRoom(connection, roomId) {
     const checkRoomQuery = `
-            SELECT * FROM Room WHERE roomId = ?;
+        SELECT * FROM Room WHERE roomId = ? AND status = 'ACTIVE';
     `;
     const checkRoomRow = await connection.query(
         checkRoomQuery,
@@ -242,6 +242,54 @@ async function insertReservation(connection, insertReservationInfoParams) {
     return insertReservationRow;
 }
 
+// 숙소 예약 목록 조회
+async function selectReservationList(connection, userIdFromJWT) {
+    const selectReservationListQuery = `
+        SELECT reservationId,
+               R.roomId , 
+               title, 
+               DATE_FORMAT(checkIn, '%Y년 %m월 %d일') AS checkIn, 
+               DATE_FORMAT(checkOut, '%Y년 %m월 %d일') AS checkOut 
+        FROM Reservation R INNER JOIN Room on R.roomId = Room.roomId 
+        WHERE R.userId = ? AND R.status = 'ACTIVE';
+    `;
+    const [selectReservationListRow] = await connection.query(
+        selectReservationListQuery,
+        userIdFromJWT
+    );
+
+    return selectReservationListRow;
+}
+
+// 숙소 예약 상태 체크
+async function checkReservation(connection, userIdFromJWT, roomId) {
+    const checkReservationQuery = `
+        SELECT * FROM Reservation
+        WHERE userId = ? AND roomId = ?;
+    `;
+    const checkReservationRow = await connection.query(
+        checkReservationQuery,
+        [userIdFromJWT, roomId]
+    );
+
+    return checkReservationRow[0];
+}
+
+// 숙소 예약 취소
+async function deleteReservation(connection, userIdFromJWT, roomId) {
+    const deleteReservationQuery = `
+        UPDATE Reservation SET status = 'DELETE'
+        WHERE userId = ? AND roomId = ?;
+    `;
+    const deleteReservationRow = await connection.query(
+        deleteReservationQuery,
+        [userIdFromJWT, roomId]
+    );
+
+    return deleteReservationRow;
+}
+
+
 
 module.exports = {
     selectRoomList,
@@ -256,5 +304,8 @@ module.exports = {
     checkRoomLike,
     insertRoomLike,
     updateRoomLike,
-    insertReservation
+    insertReservation,
+    selectReservationList,
+    checkReservation,
+    deleteReservation,
 };

@@ -84,3 +84,19 @@ exports.checkRoomLike = async function (userIdFromJWT, wishId, roomId) {
 
     return checkRoomLikeResult;
 };
+
+exports.selectReservationList = async function (userIdFromJWT) {
+    const connection = await pool.getConnection(async (conn) => conn);
+    const selectReservationListResult = await roomDao.selectReservationList(connection, userIdFromJWT);
+    connection.release();
+
+    return selectReservationListResult;
+};
+
+exports.checkReservation = async function (userIdFromJWT, roomId) {
+    const connection = await pool.getConnection(async (conn) => conn);
+    const checkReservationResult = await roomDao.checkReservation(connection, userIdFromJWT, roomId);
+    connection.release();
+
+    return checkReservationResult;
+};

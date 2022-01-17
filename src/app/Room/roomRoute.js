@@ -16,4 +16,10 @@ module.exports = function (app) {
 
     // 15. 숙소 예약 API
     app.post('/rooms/:roomId/reservations', jwtMiddleware, room.postRoomReservation);
+
+    // 16. 숙소 예약 조회 API
+    app.get('/rooms/reservations-list', jwtMiddleware, room.getReservationList);
+
+    // 17. 숙소 예약 취소 API
+    app.patch('/rooms/:roomId/reservations/cancel', jwtMiddleware, room.deleteRoomReservation);
 };

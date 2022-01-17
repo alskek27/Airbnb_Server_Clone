@@ -55,6 +55,10 @@ exports.insertReservation = async function(roomId, checkIn, checkOut, adults, ch
         if (checkRoom[0].userId === userIdFromJWT) return errResponse(baseResponse.ROOM_HOST_USER); // 3009 : 호스트는 자신의 숙소를 예약할 수 없습니다.
         if (checkRoom[0].maxPeople < (adults + children)) return errResponse(baseResponse.MAX_PEOPLE_EXCEED); // 3010 : 최대 숙박 인원을 초과하였습니다.
 
+        const checkReservation = await roomProvider.checkReservation(userIdFromJWT, roomId);
+        if (checkReservation[0].checkIn === checkIn && checkReservation[0].checkOut === checkOut)
+            return errResponse(baseResponse.RESERVATION_EXIST); // 3012 : 이미 예약된 숙소입니다.
+
         const startDate = new Date(checkIn);
         const endDate = new Date(checkOut);
         const dateDiff = Math.ceil((endDate.getTime() - startDate.getTime())/(1000*3600*24)); // 숙박일 계산
@@ -70,6 +74,25 @@ exports.insertReservation = async function(roomId, checkIn, checkOut, adults, ch
 
     } catch (err) {
         logger.error(`App - insertReservation Service error\n: ${err.message}`);
+        return errResponse(baseResponse.DB_ERROR);
+    } finally {
+        connection.release();
+    }
+};
+
+exports.deleteRoomReservation = async function(userIdFromJWT, roomId) {
+    const connection = await pool.getConnection(async (conn) => conn);
+    try {
+        const checkReservation = await roomProvider.checkReservation(userIdFromJWT, roomId);
+        if (checkReservation.length < 1) return errResponse(baseResponse.RESERVATION_NOT_EXIST); // 3011 : 예약 정보가 존재하지 않습니다.
+        if (checkReservation[0].status === 'DELETE') return errResponse(baseResponse.RESERVATION_NOT_EXIST); // 3011 : 예약 정보가 존재하지 않습니다.
+
+        const deleteReservationResult = await roomDao.deleteReservation(connection, userIdFromJWT, roomId);
+
+        return response(baseResponse.SUCCESS, deleteReservationResult[0].info);
+
+    } catch (err) {
+        logger.error(`App - deleteReservation Service error\n: ${err.message}`);
         return errResponse(baseResponse.DB_ERROR);
     } finally {
         connection.release();
