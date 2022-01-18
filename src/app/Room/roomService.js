@@ -1,8 +1,10 @@
 const {logger} = require("../../../config/winston");
 const {pool} = require("../../../config/database");
 const roomProvider = require("./roomProvider");
+const userProvider = require("../User/userProvider");
 const wishListProvider = require("../WishList/wishListProvider")
 const roomDao = require("./roomDao");
+const userDao = require("../User/userDao");
 const baseResponse = require("../../../config/baseResponseStatus");
 const {response, errResponse} = require("../../../config/response");
 const {check} = require("../User/userController");
@@ -92,6 +94,36 @@ exports.deleteRoomReservation = async function(userIdFromJWT, roomId) {
         return response(baseResponse.SUCCESS, deleteReservationResult[0].info);
 
     } catch (err) {
+        logger.error(`App - deleteReservation Service error\n: ${err.message}`);
+        return errResponse(baseResponse.DB_ERROR);
+    } finally {
+        connection.release();
+    }
+};
+
+exports.insertRoom = async function(userIdFromJWT, buildingType, roomType, placeType, location, maxPeople, bedroomNum, bedNum, bathroomNum, title, description, roomCharge, minDay) {
+    const connection = await pool.getConnection(async (conn) => conn);
+    try {
+        await connection.beginTransaction();
+
+        const checkHost = await userProvider.checkHost(userIdFromJWT);
+        if (checkHost[0].mode == '게스트') {
+            const changeMode = await userDao.changeMode(connection, userIdFromJWT);
+            await connection.commit();
+        }
+
+        const insertRoomTypeParams = [buildingType, roomType, placeType];
+        const insertRoomType = await roomDao.insertRoomType(connection, insertRoomTypeParams);
+        await connection.commit();
+
+        const insertRoomInfoParams = [userIdFromJWT, insertRoomType[0].insertId, title, description, maxPeople, bedroomNum, bedNum, bathroomNum, location, roomCharge, minDay];
+        const insertRoom = await roomDao.insertRoom(connection, insertRoomInfoParams);
+        await connection.commit();
+
+        return response(baseResponse.SUCCESS, {"roomId": insertRoom[0].insertId});
+
+    } catch (err) {
+        await connection.rollback();
         logger.error(`App - deleteReservation Service error\n: ${err.message}`);
         return errResponse(baseResponse.DB_ERROR);
     } finally {

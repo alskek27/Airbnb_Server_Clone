@@ -38,6 +38,18 @@ module.exports = {
     INFANTS_EMPTY : { "isSuccess": false, "code": 2024, "message": "유아 인원 입력해 주세요." },
     PETS_EMPTY : { "isSuccess": false, "code": 2025, "message": "반려동물 수를 입력해 주세요." },
 
+    BUILDING_TYPE_EMPTY : { "isSuccess": false, "code": 2026, "message": "건물 유형을 입력해 주세요." },
+    ROOM_TYPE_EMPTY : { "isSuccess": false, "code": 2027, "message": "숙소 유형을 입력해 주세요." },
+    PLACE_TYPE_EMPTY : { "isSuccess": false, "code": 2028, "message": "공간 유형을 입력해 주세요." },
+    MAX_PEOPLE_EMPTY : { "isSuccess": false, "code": 2029, "message": "게스트 수를 입력해 주세요." },
+    BED_ROOM_NUM_EMPTY : { "isSuccess": false, "code": 2030, "message": "침실 수를 입력해 주세요." },
+    BED_NUM_EMPTY : { "isSuccess": false, "code": 2031, "message": "침대 수를 입력해 주세요." },
+    BATH_ROOM_NUM_EMPTY : { "isSuccess": false, "code": 2032, "message": "욕실 수를 입력해 주세요." },
+    ROOM_TITLE_EMPTY : { "isSuccess": false, "code": 2033, "message": "숙소 제목을 입력해 주세요." },
+    ROOM_DESCRIPTION_EMPTY : { "isSuccess": false, "code": 2034, "message": "숙소 설명을 입력해 주세요." },
+    ROOM_CHARGE_EMPTY : { "isSuccess": false, "code": 2035, "message": "숙박비를 입력해 주세요." },
+    MIN_DAY_EMPTY : { "isSuccess": false, "code": 2036, "message": "최소 숙박 일수를 입력해 주세요." },
+
     // Response error
     USER_REDUNDANT_EMAIL : { "isSuccess": false, "code": 3001, "message":"중복된 이메일입니다." },
     USER_EMAIL_WRONG : { "isSuccess": false, "code": 3002, "message": "이메일이 잘못되었습니다." },
@@ -60,6 +72,4 @@ module.exports = {
     //Connection, Transaction 등의 서버 오류
     DB_ERROR : { "isSuccess": false, "code": 4000, "message": "데이터 베이스 에러"},
     SERVER_ERROR : { "isSuccess": false, "code": 4001, "message": "서버 에러"},
- 
- 
 }

@@ -289,7 +289,33 @@ async function deleteReservation(connection, userIdFromJWT, roomId) {
     return deleteReservationRow;
 }
 
+// 숙소 호스팅 (숙소 유형)
+async function insertRoomType(connection, insertRoomInfoParams) {
+    const insertRoomTypeQuery = `
+        INSERT INTO RoomType (building, type, detail)
+        VALUES (?, ?, ?);
+    `;
+    const insertRoomTypeRow = await connection.query(
+        insertRoomTypeQuery,
+        insertRoomInfoParams
+    );
 
+    return insertRoomTypeRow;
+}
+
+// 숙소 호스팅 (기본 정보)
+async function insertRoom(connection, insertRoomInfoParams) {
+    const insertRoomQuery = `
+        INSERT INTO Room (userId, typeId, title, description, maxPeople, bedroomNum, bedNum, bathroomNum, location, roomCharge, minDay)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
+    `;
+    const insertRoomRow = await connection.query(
+        insertRoomQuery,
+        insertRoomInfoParams
+    );
+
+    return insertRoomRow;
+}
 
 module.exports = {
     selectRoomList,
@@ -308,4 +334,6 @@ module.exports = {
     selectReservationList,
     checkReservation,
     deleteReservation,
+    insertRoomType,
+    insertRoom,
 };

@@ -55,3 +55,11 @@ exports.checkIntroduce = async function (userId) {
 
   return checkIntroduceResult;
 };
+
+exports.checkHost = async function (userIdFromJWT) {
+  const connection = await pool.getConnection(async (conn) => conn);
+  const checkHostResult = await userDao.checkHost(connection, userIdFromJWT);
+  connection.release();
+
+  return checkHostResult;
+};

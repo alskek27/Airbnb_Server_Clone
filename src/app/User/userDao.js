@@ -108,6 +108,35 @@ async function updateUserProfile(connection, introduce, userId) {
   return updateUserProfileRow;
 }
 
+// 호스트 체크
+async function checkHost(connection, userIdFromJWT) {
+  const checkHostQuery = `
+        SELECT mode
+        FROM User
+        WHERE userId = ?;
+    `;
+  const checkHostRow = await connection.query(
+      checkHostQuery,
+      userIdFromJWT
+  );
+
+  return checkHostRow[0];
+}
+
+// 유저 모드 변경
+async function changeMode(connection, userIdFromJWT) {
+  const changeModeQuery = `
+        UPDATE User SET mode = '호스트'
+        WHERE userId = ?;
+    `;
+  const changeModeRow = await connection.query(
+      changeModeQuery,
+      userIdFromJWT
+  );
+
+  return changeModeRow[0];
+}
+
 module.exports = {
   selectUserEmail,
   selectUserId,
@@ -117,4 +146,6 @@ module.exports = {
   selectUserProfile,
   checkIntroduce,
   updateUserProfile,
+  checkHost,
+  changeMode
 };
