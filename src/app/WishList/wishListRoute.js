@@ -12,7 +12,7 @@ module.exports = function (app) {
     app.get('/wishlists/:wishId/contents', jwtMiddleware, wishList.getWishList);
 
     // 13. 위시리스트 수정 API
-    app.patch('/wishlists/:wishId/set', jwtMiddleware, wishList.patchWishList);
+    app.patch('/wishlists/:wishId/edit', jwtMiddleware, wishList.patchWishList);
 
     // 14. 위시리스트 삭제 API
     app.patch('/wishlists/:wishId/status', jwtMiddleware, wishList.deleteWishList);

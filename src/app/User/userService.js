@@ -88,3 +88,23 @@ exports.postSignIn = async function (email, password) {
         return errResponse(baseResponse.DB_ERROR);
     }
 };
+
+exports.updateUserProfile = async function (userId, introduce) {
+    const connection = await pool.getConnection(async (conn) => conn);
+    try {
+        const checkIntroduce = await userProvider.checkIntroduce(userId);
+
+        if (checkIntroduce[0].introduce == introduce)
+            return errResponse(baseResponse.INTRODUCE_SAME); // 3013 : 소개에서 수정된 부분이 존재하지 않습니다.
+
+        const updateProfileResult = await userDao.updateUserProfile(connection, introduce, userId);
+
+        return response(baseResponse.SUCCESS, updateProfileResult[0].info);
+
+    } catch (err) {
+        logger.error(`App - updateUserProfile Service error\n: ${err.message}`);
+        return errResponse(baseResponse.DB_ERROR);
+    } finally {
+        connection.release();
+    }
+};

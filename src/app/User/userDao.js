@@ -63,6 +63,50 @@ async function selectUserAccount(connection, email) {
   return selectUserAccountRow[0];
 }
 
+// 프로필 조회
+async function selectUserProfile(connection, userId) {
+  const selectUserProfileQuery = `
+        SELECT userId,
+               firstName AS name,
+               IFNULL(profileImgUrl, '') AS profileImg,
+               DATE_FORMAT(createdAt, '%Y') AS createdAt,
+               introduce
+        FROM User
+        WHERE userId = ?;
+  `;
+  const selectUserProfileRow = await connection.query(
+      selectUserProfileQuery,
+      userId
+  );
+  return selectUserProfileRow[0];
+}
+
+// 프로필 체크
+async function checkIntroduce(connection, userId) {
+  const checkIntroduceQuery = `
+        SELECT introduce
+        FROM User
+        WHERE userId = ?;
+  `;
+  const checkIntroduceRow = await connection.query(
+      checkIntroduceQuery,
+      userId
+  );
+  return checkIntroduceRow[0];
+}
+
+// 프로필 수정
+async function updateUserProfile(connection, introduce, userId) {
+  const updateUserProfileQuery = `
+        UPDATE User SET introduce = ?
+        WHERE userId = ?;
+  `;
+  const updateUserProfileRow = await connection.query(
+      updateUserProfileQuery,
+      [introduce, userId]
+  );
+  return updateUserProfileRow;
+}
 
 module.exports = {
   selectUserEmail,
@@ -70,4 +114,7 @@ module.exports = {
   insertUserInfo,
   selectUserPassword,
   selectUserAccount,
+  selectUserProfile,
+  checkIntroduce,
+  updateUserProfile,
 };

@@ -82,13 +82,55 @@ exports.loginUsers = async function (req, res) {
  */
 exports.check = async function(req, res) {
     const userIdFromJWT = req.verifiedToken.userId;
-    const checkJWT = await userProvider.retrieveUser(userIdFromJWT);
 
     if (!userIdFromJWT)
         return res.send(response(baseResponse.TOKEN_EMPTY)); // 2000 : JWT 토큰을 입력해주세요.
+
+    const checkJWT = await userProvider.retrieveUser(userIdFromJWT);
 
     if (!checkJWT)
         return res.send(response(baseResponse.TOKEN_VERIFICATION_FAILURE)); // 3000 : JWT 토큰 검증 실패
 
     return res.send(response(baseResponse.TOKEN_VERIFICATION_SUCCESS, checkJWT)); // 1001 : JWT 토큰 검증 성공
+};
+
+/**
+ * API NO. 18
+ * API Name : 프로필 조회 API
+ * [GET] /users/:userId/profile
+ */
+exports.getProfile = async function(req, res) {
+    const userIdFromJWT = req.verifiedToken.userId;
+    const userId = req.params.userId;
+
+    if (!userIdFromJWT) return res.send(response(baseResponse.TOKEN_EMPTY)); // 2000 : JWT 토큰을 입력해주세요.
+
+    if (!userId) return res.send(response(baseResponse.USER_USERID_EMPTY)); // 2014 : userId를 입력해 주세요.
+
+    if (userIdFromJWT != userId) return res.send(response(baseResponse.USER_ID_NOT_MATCH)) // 2015 : 유저 아이디 값을 확인해 주세요.
+
+    const getUserProfile = await userProvider.selectUserProfile(userId);
+
+    return res.send(response(baseResponse.SUCCESS, getUserProfile));
+};
+
+/**
+ * API NO. 19
+ * API Name : 프로필 수정 API
+ * [PATCH] /users/:userId/profile-set
+ */
+exports.patchProfile = async function(req, res) {
+    const userIdFromJWT = req.verifiedToken.userId;
+    const userId = req.params.userId;
+    const {introduce} =req.body;
+
+    if (!userIdFromJWT) return res.send(response(baseResponse.TOKEN_EMPTY)); // 2000 : JWT 토큰을 입력해주세요.
+
+    if (!userId) return res.send(response(baseResponse.USER_USERID_EMPTY)); // 2014 : userId를 입력해 주세요.
+
+    if (userIdFromJWT != userId) return res.send(response(baseResponse.USER_ID_NOT_MATCH)) // 2015 : 유저 아이디 값을 확인해 주세요.
+
+    const editUserProfile = await userService.updateUserProfile(userId, introduce);
+
+    return res.send(editUserProfile);
 };

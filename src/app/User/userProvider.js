@@ -39,3 +39,19 @@ exports.accountCheck = async function (email) {
 
   return userAccountResult;
 };
+
+exports.selectUserProfile = async function (userId) {
+  const connection = await pool.getConnection(async (conn) => conn);
+  const userProfileResult = await userDao.selectUserProfile(connection, userId);
+  connection.release();
+
+  return userProfileResult;
+};
+
+exports.checkIntroduce = async function (userId) {
+  const connection = await pool.getConnection(async (conn) => conn);
+  const checkIntroduceResult = await userDao.checkIntroduce(connection, userId);
+  connection.release();
+
+  return checkIntroduceResult;
+};

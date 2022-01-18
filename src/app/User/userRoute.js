@@ -10,4 +10,10 @@ module.exports = function (app) {
 
     // 3. 자동 로그인 API
     app.get('/users/auto-login', jwtMiddleware, user.check);
+
+    // 18. 프로필 조회 API
+    app.get('/users/:userId/profile', jwtMiddleware, user.getProfile);
+
+    // 19. 프로필 수정 API
+    app.patch('/users/:userId/profile-edit', jwtMiddleware, user.patchProfile);
 };

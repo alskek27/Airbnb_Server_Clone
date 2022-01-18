@@ -38,10 +38,6 @@ module.exports = {
     INFANTS_EMPTY : { "isSuccess": false, "code": 2024, "message": "유아 인원 입력해 주세요." },
     PETS_EMPTY : { "isSuccess": false, "code": 2025, "message": "반려동물 수를 입력해 주세요." },
 
-
-
-
-
     // Response error
     USER_REDUNDANT_EMAIL : { "isSuccess": false, "code": 3001, "message":"중복된 이메일입니다." },
     USER_EMAIL_WRONG : { "isSuccess": false, "code": 3002, "message": "이메일이 잘못되었습니다." },
@@ -58,6 +54,8 @@ module.exports = {
 
     RESERVATION_NOT_EXIST : { "isSuccess": false, "code": 3011, "message": "예약 정보가 존재하지 않습니다." },
     RESERVATION_EXIST : { "isSuccess": false, "code": 3012, "message": "이미 예약된 숙소입니다." },
+
+    INTRODUCE_SAME : { "isSuccess": false, "code": 3013, "message": "소개에서 수정된 부분이 존재하지 않습니다." },
 
     //Connection, Transaction 등의 서버 오류
     DB_ERROR : { "isSuccess": false, "code": 4000, "message": "데이터 베이스 에러"},
