@@ -69,6 +69,8 @@ module.exports = {
 
     INTRODUCE_SAME : { "isSuccess": false, "code": 3013, "message": "소개에서 수정된 부분이 존재하지 않습니다." },
 
+    NOT_ROOM_HOST_USER : { "isSuccess": false, "code": 3014, "message": "숙소의 호스트가 아닙니다." },
+
     //Connection, Transaction 등의 서버 오류
     DB_ERROR : { "isSuccess": false, "code": 4000, "message": "데이터 베이스 에러"},
     SERVER_ERROR : { "isSuccess": false, "code": 4001, "message": "서버 에러"},

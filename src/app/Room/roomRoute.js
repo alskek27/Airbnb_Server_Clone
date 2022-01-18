@@ -26,4 +26,7 @@ module.exports = function (app) {
     // 20. 숙소 호스팅 API
     app.post('/rooms/hosting', jwtMiddleware, room.postRoom);
 
-};
+    // 21. 숙소 정보 수정 API
+    app.patch('/rooms/:roomId/hosting/details', jwtMiddleware, room.patchRoom);
+
+}

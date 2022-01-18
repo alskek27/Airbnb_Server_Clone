@@ -208,3 +208,60 @@ exports.postRoom = async function (req, res) {
 
     return res.send(insertRoomResponse);
 };
+
+/**
+ * API No. 21
+ * API Name : 숙소 정보 수정 API
+ * [POST] /rooms/:roomId/hosting/details
+ */
+exports.patchRoom = async function (req, res) {
+    const userIdFromJWT = req.verifiedToken.userId;
+    const roomId = req.params.roomId;
+    const {buildingType, roomType, placeType, location, maxPeople, bedroomNum, bedNum, bathroomNum, title, description, roomCharge, minDay} = req.body;
+
+    if (!userIdFromJWT) return res.send(response(baseResponse.TOKEN_EMPTY)); // 2000 : JWT 토큰을 입력해주세요.
+
+    if (!buildingType) return res.send(response(baseResponse.BUILDING_TYPE_EMPTY)); // 2026 : 건물 유형을 입력해 주세요.
+
+    if (!roomType) return res.send(response(baseResponse.ROOM_TYPE_EMPTY)); // 2027 : 숙소 유형을 입력해 주세요.
+
+    if (!placeType) return res.send(response(baseResponse.PLACE_TYPE_EMPTY)); // 2028 : 공간 유형을 입력해 주세요.
+
+    if (!location) return res.send(response(baseResponse.LOCATION_EMPTY)); // 2016 : 위치를 입력해 주세요.
+
+    if (!maxPeople) return res.send(response(baseResponse.MAX_PEOPLE_EMPTY)); // 2029 : 게스트 수를 입력해 주세요.
+
+    if (!bedroomNum) return res.send(response(baseResponse.BED_ROOM_NUM_EMPTY)); // 2030 : 침실 수를 입력해 주세요.
+
+    if (!bedNum) return res.send(response(baseResponse.BED_NUM_EMPTY)); // 2031 : 침대 수를 입력해 주세요.
+
+    if (!bathroomNum) return res.send(response(baseResponse.BATH_ROOM_NUM_EMPTY)); // 2032 : 욕실 수를 입력해 주세요.
+
+    if (!title) return res.send(response(baseResponse.ROOM_TITLE_EMPTY)); // 2033 : 숙소 제목을 입력해 주세요.
+
+    if (!description) return res.send(response(baseResponse.ROOM_DESCRIPTION_EMPTY)); // 2034 : 숙소 설명을 입력해 주세요.
+
+    if (!roomCharge) return res.send(response(baseResponse.ROOM_CHARGE_EMPTY)); // 2035 : 숙박비를 입력해 주세요.
+
+    if (!minDay) return res.send(response(baseResponse.MIN_DAY_EMPTY)); // 2036 : 최소 숙박 일수를 입력해 주세요.
+
+
+    const updateRoomResponse = await roomService.updateRoom(
+        userIdFromJWT,
+        roomId,
+        buildingType,
+        roomType,
+        placeType,
+        location,
+        maxPeople,
+        bedroomNum,
+        bedNum,
+        bathroomNum,
+        title,
+        description,
+        roomCharge,
+        minDay
+    );
+
+    return res.send(updateRoomResponse);
+};

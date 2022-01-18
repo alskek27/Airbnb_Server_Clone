@@ -124,7 +124,35 @@ exports.insertRoom = async function(userIdFromJWT, buildingType, roomType, place
 
     } catch (err) {
         await connection.rollback();
-        logger.error(`App - deleteReservation Service error\n: ${err.message}`);
+        logger.error(`App - insertRoom Service error\n: ${err.message}`);
+        return errResponse(baseResponse.DB_ERROR);
+    } finally {
+        connection.release();
+    }
+};
+
+exports.updateRoom = async function(userIdFromJWT, roomId, buildingType, roomType, placeType, location, maxPeople, bedroomNum, bedNum, bathroomNum, title, description, roomCharge, minDay) {
+    const connection = await pool.getConnection(async (conn) => conn);
+    try {
+        await connection.beginTransaction();
+
+        const checkRoom = await roomProvider.checkRoom(roomId);
+        if (checkRoom.length < 1 || checkRoom[0].status == 'DELETE') return errResponse(baseResponse.ROOM_NOT_EXIST); // 3006 : 해당 숙소가 존재하지 않습니다.
+        if (checkRoom[0].userId != userIdFromJWT) return errResponse(baseResponse.NOT_ROOM_HOST_USER); // 3014 : 숙소의 호스트가 아닙니다.
+
+        const updateRoomTypeParams = [buildingType, roomType, placeType, checkRoom[0].typeId];
+        const updateRoomType = await roomDao.updateRoomType(connection, updateRoomTypeParams);
+        await connection.commit();
+
+        const updateRoomInfoParams = [checkRoom[0].typeId, title, description, maxPeople, bedroomNum, bedNum, bathroomNum, location, roomCharge, minDay, roomId];
+        const updateRoom = await roomDao.updateRoom(connection, updateRoomInfoParams);
+        await connection.commit();
+
+        return response(baseResponse.SUCCESS, updateRoom[0].info);
+
+    } catch (err) {
+        await connection.rollback();
+        logger.error(`App - updateRoom Service error\n: ${err.message}`);
         return errResponse(baseResponse.DB_ERROR);
     } finally {
         connection.release();

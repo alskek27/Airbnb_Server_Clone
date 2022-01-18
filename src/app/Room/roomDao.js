@@ -317,6 +317,45 @@ async function insertRoom(connection, insertRoomInfoParams) {
     return insertRoomRow;
 }
 
+// 숙소 정보 수정 (숙소 유형)
+async function updateRoomType(connection, updateRoomTypeParams) {
+    const updateRoomTypeQuery = `
+        UPDATE RoomType SET building = ?, type = ?, detail =?
+        WHERE typeId = ?;
+    `;
+    const updateRoomTypeRow = await connection.query(
+        updateRoomTypeQuery,
+        updateRoomTypeParams
+    );
+
+    return updateRoomTypeRow;
+}
+
+// 숙소 정보 수정 (기본 정보)
+async function updateRoom(connection, updateRoomInfoParams) {
+    const updateRoomQuery = `
+        UPDATE Room
+        SET typeId = ?,
+            title = ?,
+            description = ?,
+            maxPeople = ?,
+            bedroomNum = ?,
+            bedNum = ?,
+            bathroomNum = ?,
+            location = ?,
+            roomCharge = ?,
+            minDay = ?
+        WHERE roomId = ?;
+    `;
+    const updateRoomRow = await connection.query(
+        updateRoomQuery,
+        updateRoomInfoParams
+    );
+
+    return updateRoomRow;
+}
+
+
 module.exports = {
     selectRoomList,
     checkRoomLikesStatus,
@@ -336,4 +375,6 @@ module.exports = {
     deleteReservation,
     insertRoomType,
     insertRoom,
+    updateRoomType,
+    updateRoom,
 };
