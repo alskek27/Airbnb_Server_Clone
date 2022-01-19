@@ -137,6 +137,63 @@ async function changeMode(connection, userIdFromJWT) {
   return changeModeRow[0];
 }
 
+// 계정 개인정보 조회
+async function selectPersonalInfo(connection, userIdFromJWT) {
+  const selectPersonalInfoQuery = `
+        SELECT CONCAT(firstName, ' ' , lastName) AS name,
+               IFNULL(gender, '지정되지 않음') AS gender,
+               DATE_FORMAT(birth, '%Y년 %m월 %d일') AS birth,
+               email,
+               IFNULL(phoneNumber, '제공되지 않음') AS phoneNumber
+        FROM User
+        WHERE userId = ?;
+    `;
+  const selectPersonalInfoRow = await connection.query(
+      selectPersonalInfoQuery,
+      userIdFromJWT
+  );
+
+  return selectPersonalInfoRow[0];
+}
+
+// 계정 개인정보 조회
+async function selectPersonalInfo(connection, userIdFromJWT) {
+  const selectPersonalInfoQuery = `
+        SELECT CONCAT(firstName, ' ' , lastName) AS name,
+               IFNULL(gender, '지정되지 않음') AS gender,
+               DATE_FORMAT(birth, '%Y년 %m월 %d일') AS birth,
+               email
+        FROM User
+        WHERE userId = ?;
+    `;
+  const selectPersonalInfoRow = await connection.query(
+      selectPersonalInfoQuery,
+      userIdFromJWT
+  );
+
+  return selectPersonalInfoRow[0];
+}
+
+// 계정 개인정보 수정
+async function updatePersonalInfo(connection, updatePersonalInfoParams) {
+  const updatePersonalInfoQuery = `
+    UPDATE User
+    SET lastName = ?,
+        firstName = ?,
+        gender = ?,
+        birth = ?,
+        email = ?
+    WHERE userId = ?;
+    `;
+  const updatePersonalInfoRow = await connection.query(
+      updatePersonalInfoQuery,
+      updatePersonalInfoParams
+  );
+
+  return updatePersonalInfoRow;
+}
+
+
 module.exports = {
   selectUserEmail,
   selectUserId,
@@ -147,5 +204,7 @@ module.exports = {
   checkIntroduce,
   updateUserProfile,
   checkHost,
-  changeMode
+  changeMode,
+  selectPersonalInfo,
+  updatePersonalInfo
 };

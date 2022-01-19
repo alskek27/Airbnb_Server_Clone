@@ -355,6 +355,21 @@ async function updateRoom(connection, updateRoomInfoParams) {
     return updateRoomRow;
 }
 
+// 숙소 비활성화
+async function deleteRoom(connection, roomId) {
+    const deleteRoomQuery = `
+        UPDATE Room SET status = 'DELETE'
+        WHERE roomId = ?;
+    `;
+    const deleteRoomRow = await connection.query(
+        deleteRoomQuery,
+        roomId
+    );
+
+    return deleteRoomRow;
+}
+
+
 
 module.exports = {
     selectRoomList,
@@ -377,4 +392,5 @@ module.exports = {
     insertRoom,
     updateRoomType,
     updateRoom,
+    deleteRoom,
 };

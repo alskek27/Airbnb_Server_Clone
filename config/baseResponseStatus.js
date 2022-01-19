@@ -50,6 +50,12 @@ module.exports = {
     ROOM_CHARGE_EMPTY : { "isSuccess": false, "code": 2035, "message": "숙박비를 입력해 주세요." },
     MIN_DAY_EMPTY : { "isSuccess": false, "code": 2036, "message": "최소 숙박 일수를 입력해 주세요." },
 
+    FIRSTNAME_EMPTY : { "isSuccess": false, "code": 2037, "message": "이름은 반드시 입력해야 합니다." },
+    LASTNAME_EMPTY : { "isSuccess": false, "code": 2038, "message": "성은 반드시 입력해야 합니다." },
+    GENDER_EMPTY : { "isSuccess": false, "code": 2039, "message": "성별을 입력해 주세요." },
+    BIRTH_EMPTY : { "isSuccess": false, "code": 2040, "message": "생년월일을 입력해 주세요." },
+    EMAIL_EMPTY : { "isSuccess": false, "code": 2041, "message": "이메일 주소를 입력해 주세요." },
+
     // Response error
     USER_REDUNDANT_EMAIL : { "isSuccess": false, "code": 3001, "message":"중복된 이메일입니다." },
     USER_EMAIL_WRONG : { "isSuccess": false, "code": 3002, "message": "이메일이 잘못되었습니다." },

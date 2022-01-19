@@ -212,7 +212,7 @@ exports.postRoom = async function (req, res) {
 /**
  * API No. 21
  * API Name : 숙소 정보 수정 API
- * [POST] /rooms/:roomId/hosting/details
+ * [PATCH] /rooms/:roomId/hosting/details
  */
 exports.patchRoom = async function (req, res) {
     const userIdFromJWT = req.verifiedToken.userId;
@@ -220,6 +220,8 @@ exports.patchRoom = async function (req, res) {
     const {buildingType, roomType, placeType, location, maxPeople, bedroomNum, bedNum, bathroomNum, title, description, roomCharge, minDay} = req.body;
 
     if (!userIdFromJWT) return res.send(response(baseResponse.TOKEN_EMPTY)); // 2000 : JWT 토큰을 입력해주세요.
+
+    if (!roomId) return res.send(response(baseResponse.ROOM_ID_EMPTY)); // 2017 : roomId를 입력해 주세요.
 
     if (!buildingType) return res.send(response(baseResponse.BUILDING_TYPE_EMPTY)); // 2026 : 건물 유형을 입력해 주세요.
 
@@ -264,4 +266,22 @@ exports.patchRoom = async function (req, res) {
     );
 
     return res.send(updateRoomResponse);
+};
+
+/**
+ * API No. 22
+ * API Name : 숙소 비활성화 API
+ * [PATCH] /rooms/:roomId/hostring/status
+ */
+exports.deleteRoom = async function (req, res) {
+    const userIdFromJWT = req.verifiedToken.userId;
+    const roomId = req.params.roomId;
+
+    if (!userIdFromJWT) return res.send(response(baseResponse.TOKEN_EMPTY)); // 2000 : JWT 토큰을 입력해주세요.
+
+    if (!roomId) return res.send(response(baseResponse.ROOM_ID_EMPTY)); // 2017 : roomId를 입력해 주세요.
+
+    const deleteRoomResponse = await roomService.deleteRoom(userIdFromJWT, roomId);
+
+    return res.send(deleteRoomResponse);
 };

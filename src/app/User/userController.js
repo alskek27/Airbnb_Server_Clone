@@ -134,3 +134,50 @@ exports.patchProfile = async function(req, res) {
 
     return res.send(editUserProfile);
 };
+
+/**
+ * API NO. 23
+ * API Name : 개인정보 조회 API
+ * [GET] /users/personal-info
+ */
+exports.getPersonalInfo = async function(req, res) {
+    const userIdFromJWT = req.verifiedToken.userId;
+
+    if (!userIdFromJWT) return res.send(response(baseResponse.TOKEN_EMPTY)); // 2000 : JWT 토큰을 입력해주세요.
+
+    const getPersonalInfo = await userProvider.getPersonalInfo(userIdFromJWT);
+
+    return res.send(response(baseResponse.SUCCESS, getPersonalInfo));
+};
+
+/**
+ * API NO. 23
+ * API Name : 개인정보 수정 API
+ * [PATCH] /users/personal-info/edit
+ */
+exports.editPersonalInfo = async function(req, res) {
+    const userIdFromJWT = req.verifiedToken.userId;
+    const {firstName, lastName, gender, birth, email} = req.body;
+
+    if (!userIdFromJWT) return res.send(response(baseResponse.TOKEN_EMPTY)); // 2000 : JWT 토큰을 입력해주세요.
+
+    if (!firstName) return res.send(response(baseResponse.FIRSTNAME_EMPTY)); // 2037 : 이름은 반드시 입력해야 합니다.
+    if (!lastName) return res.send(response(baseResponse.LASTNAME_EMPTY)); // 2038 : 성은 반드시 입력해야 합니다.
+
+    if (!gender) return res.send(response(baseResponse.GENDER_EMPTY)); // 2039 : 성별을 입력해 주세요.
+
+    if (!birth) return res.send(response(baseResponse.BIRTH_EMPTY)); // 2040 : 생년월일을 입력해 주세요.
+
+    if (!email) return res.send(response(baseResponse.EMAIL_EMPTY)); // 2041 : 이메일 주소를 입력해 주세요.
+
+    const updatePersonalInfo = await userService.updatePersonalInfo(
+        userIdFromJWT,
+        firstName,
+        lastName,
+        gender,
+        birth,
+        email
+    );
+
+    return res.send(updatePersonalInfo);
+};

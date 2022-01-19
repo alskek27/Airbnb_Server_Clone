@@ -63,3 +63,11 @@ exports.checkHost = async function (userIdFromJWT) {
 
   return checkHostResult;
 };
+
+exports.getPersonalInfo = async function (userIdFromJWT) {
+  const connection = await pool.getConnection(async (conn) => conn);
+  const personalInfoResult = await userDao.selectPersonalInfo(connection, userIdFromJWT);
+  connection.release();
+
+  return personalInfoResult;
+};

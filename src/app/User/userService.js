@@ -108,3 +108,19 @@ exports.updateUserProfile = async function (userId, introduce) {
         connection.release();
     }
 };
+
+exports.updatePersonalInfo = async function (userIdFromJWT, firstName, lastName, gender, birth, email) {
+    const connection = await pool.getConnection(async (conn) => conn);
+    try {
+        const updatePersonalInfoParams = [lastName, firstName, gender, birth, email, userIdFromJWT];
+        const updatePersonalInfoResult = await userDao.updatePersonalInfo(connection, updatePersonalInfoParams);
+
+        return response(baseResponse.SUCCESS, updatePersonalInfoResult[0].info);
+
+    } catch (err) {
+        logger.error(`App - updatePersonalInfo Service error\n: ${err.message}`);
+        return errResponse(baseResponse.DB_ERROR);
+    } finally {
+        connection.release();
+    }
+};

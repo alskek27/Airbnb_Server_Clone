@@ -29,4 +29,7 @@ module.exports = function (app) {
     // 21. 숙소 정보 수정 API
     app.patch('/rooms/:roomId/hosting/details', jwtMiddleware, room.patchRoom);
 
+    // 22. 숙소 비활성화 API
+    app.patch('/rooms/:roomId/hosting/status', jwtMiddleware, room.deleteRoom);
+
 }
