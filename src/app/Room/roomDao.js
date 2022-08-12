@@ -249,7 +249,8 @@ async function selectReservationList(connection, userIdFromJWT) {
                R.roomId , 
                title, 
                DATE_FORMAT(checkIn, '%Y년 %m월 %d일') AS checkIn, 
-               DATE_FORMAT(checkOut, '%Y년 %m월 %d일') AS checkOut 
+               DATE_FORMAT(checkOut, '%Y년 %m월 %d일') AS checkOut,
+               totalCharge
         FROM Reservation R INNER JOIN Room on R.roomId = Room.roomId 
         WHERE R.userId = ? AND R.status = 'ACTIVE';
     `;

@@ -112,7 +112,7 @@ async function deleteWishList(connection, userIdFromJWT, wishId) {
 // 위시리스트 숙소 삭제
 async function deleteWishListRooms(connection, wishId) {
     const deleteWishListRoomsQuery = `
-        UPDATE WishMapping SET status = 'DELETE'
+        UPDATE WishMapping SET status = 'INACTIVE'
         WHERE wishId = ?;
     `;
     const deleteWishListRoomsRow = await connection.query(

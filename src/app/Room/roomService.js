@@ -26,12 +26,12 @@ exports.insertRoomLike = async function(userIdFromJWT, wishId, roomId) {
         const checkRoomLike = await roomProvider.checkRoomLike(userIdFromJWT, wishId, roomId);
         await connection.beginTransaction();
 
-        if (checkRoomLike.length < 1) {
+        if (checkRoomLike.length < 1) { // 숙소 찜하기
             const insertRoomLikeResult = await roomDao.insertRoomLike(connection, wishId, roomId);
             await connection.commit();
 
             return response(baseResponse.SUCCESS, insertRoomLikeResult[0].insertId);
-        } else {
+        } else { // 숙소 찜 상태 변경
             if (checkRoomLike[0].status === 'ACTIVE') status = 'INACTIVE';
             else if (checkRoomLike[0].status === 'INACTIVE') status = 'ACTIVE';
 
