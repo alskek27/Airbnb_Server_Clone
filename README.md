@@ -20,7 +20,7 @@
 ## Architecture
 - AWS(EC2, RDS) / Nginx / MySQL
 - Node.js / Express / JavaScript
-- Restful API
+- RESTful API
 
 ![rising_test_architecture](https://user-images.githubusercontent.com/97224087/185792382-6627b9e2-4772-43a7-8320-ce78ca2d3083.png)
 
