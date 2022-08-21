@@ -1,4 +1,31 @@
-## RC 3기 라이징 테스트 - Airbnb
+# RC 3기 라이징 테스트 - Airbnb
+
+> 2022-01-08 ~ 2022-01-21
+
+## Introduction
+라이징 캠프 3기 서버 과정, 숙박 공유 서비스 'Airbnb' 클론 코딩(with 서버 교육용 Node.js 템플릿)
+
+## Main Features
+- 회원가입 / 로그인
+- 숙소 검색
+- 숙소 리스트 및 상세 정보 조회
+- 위시리스트
+- 숙소 예약
+
+## ERD Design
+- DB 모델링 도구인 ERDCloud 사용
+
+![Nada_Airbnb_ERD](https://user-images.githubusercontent.com/97224087/185791487-7d69f017-6bed-4b70-9e8b-be78122339cc.png)
+
+## Architecture
+- AWS(EC2, RDS) / Nginx / MySQL
+- Node.js / Express / JavaScript
+- Restful API
+
+![rising_test_architecture](https://user-images.githubusercontent.com/97224087/185792382-6627b9e2-4772-43a7-8320-ce78ca2d3083.png)
+
+
+## Dev Log
 
 ### 2022-01-08 진행상황
 - 클라이언트와 함께 프로젝트 기획서 작성
