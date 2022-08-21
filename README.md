@@ -1,9 +1,9 @@
 # RC 3기 라이징 테스트 - Airbnb
 
+## Introduction
 > 2022-01-08 ~ 2022-01-21
 
-## Introduction
-라이징 캠프 3기 서버 과정, 숙박 공유 서비스 'Airbnb' 클론 코딩(with 서버 교육용 Node.js 템플릿)
+라이징 캠프 3기 서버 과정, 숙박 공유 서비스 'Airbnb' 클론 코딩 (with 서버 교육용 Node.js 템플릿)
 
 ## Main Features
 - 회원가입 / 로그인
